@@ -1,0 +1,127 @@
+[project]
+name = "adaptive-learning-core"
+version = "0.1.0"
+description = "Adaptive Learning System with Bloom's Taxonomy, Mastery Learning, IRT evaluation, and LangGraph orchestration"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Emmanuel Fragkiadakis"}
+]
+requires-python = ">=3.10"
+keywords = [
+    "adaptive-learning",
+    "intelligent-tutoring",
+    "bloom-taxonomy",
+    "mastery-learning",
+    "item-response-theory",
+    "rag",
+    "llm",
+    "education",
+    "e-learning"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Education",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "pydantic>=2.0",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "scikit-learn>=1.3",
+    "sentence-transformers>=2.2",
+    "tiktoken>=0.5",
+    "pypdf>=3.0",
+    "rich>=13.0",
+    "typer>=0.9",
+    # LangGraph/LangChain for agent orchestration
+    "langgraph>=0.2",
+    "langchain>=0.3",
+    "langchain-core>=0.3",
+    "langchain-openai>=0.2",
+    "langchain-anthropic>=0.2",
+]
+
+[project.optional-dependencies]
+openai = ["openai>=1.0"]
+anthropic = ["anthropic>=0.18"]
+eval = [
+    "ragas>=0.1",
+]
+all = [
+    "openai>=1.0",
+    "anthropic>=0.18",
+    "ragas>=0.1",
+    "jupyter>=1.0",
+    "matplotlib>=3.7",
+    "seaborn>=0.12",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-asyncio>=0.21",
+    "ruff>=0.1",
+    "mypy>=1.0",
+    "pre-commit>=3.0",
+]
+
+[project.scripts]
+alc = "adaptive_learning_core.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/emfrg/adaptive-learning-core"
+Documentation = "https://github.com/emfrg/adaptive-learning-core#readme"
+Repository = "https://github.com/emfrg/adaptive-learning-core"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/adaptive_learning_core"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM"]
+ignore = ["E501"]
+
+[tool.ruff.isort]
+known-first-party = ["adaptive_learning_core"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --cov=adaptive_learning_core --cov-report=term-missing"
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["src/adaptive_learning_core"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
+    "pytest-cov>=7.0.0",
+]
