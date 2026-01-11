@@ -130,6 +130,19 @@ config = AdaptiveLearningConfig(
 - NumPy, SciPy, scikit-learn
 - Optional: sentence-transformers, openai, anthropic
 
+
+## Acknowledgments
+
+Based on a university project for the Adaptive Interactive Systems course at Utrecht University (2024).
+
+Original contributors:
+- Sebastian Daniëls
+- Emmanuel Fragkiadakis
+- Ivan Oskam
+- Lili Tordai
+
+Continued development and maintenance by Emmanuel (Manos) Fragkiadakis.
+
 ## License
 
 MIT License
