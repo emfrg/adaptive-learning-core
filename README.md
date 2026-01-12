@@ -33,6 +33,9 @@ Full implementation of psychometric models for question quality estimation:
 - **2PL**: `P(θ) = 1 / (1 + e^{-a(θ-b)})`
 - **3PL**: `P(θ) = c + (1-c) / (1 + e^{-a(θ-b)})`
 
+## Paper
+For detailed system presentation and user interface design, see the [full report](INFOMAIS_Group13-Final%20Paper.pdf)
+
 ## Installation
 
 ```bash
