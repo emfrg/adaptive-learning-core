@@ -1,42 +1,26 @@
 # Adaptive Learning Core
 
-An Adaptive Learning System implementing personalized e-learning with Bloom's Taxonomy, Mastery Learning, Item Response Theory, and LangGraph orchestration.
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## Overview
+Adaptive e-learning system with Bloom's Taxonomy question generation, mastery tracking, and Ebbinghaus-inspired knowledge decay. Upload a textbook, get personalized quizzes, achieve your learning goals at your pace.
+<!-- 
+## Demo
 
-This system provides the algorithmic foundation for adaptive learning that:
+[![Video Demo](assets/demo_thumbnail.png)](https://your-video-link)
 
-- **Tracks learner mastery** using continuous mastery scores with time-based decay
-- **Selects learning content** probabilistically based on mastery gaps
-- **Generates questions** using RAG (Retrieval-Augmented Generation) from source materials
-- **Classifies question difficulty** using Bloom's Taxonomy (6 cognitive levels)
-- **Evaluates question quality** using IRT discrimination, LLM-as-judge, and RAGAS metrics
+Or try the [interactive demo →](https://your-demo-link) -->
 
-## Key Algorithms
+## How It Works
+<!-- 
+![System Flow](assets/system_flow.png) -->
 
-### From the Research Paper
+1. **Upload** → Textbook is chunked into cards
+2. **Quiz** → RAG generates questions classified by Bloom's Taxonomy
+3. **Adapt** → System updates mastery scores based on performance
+4. **Repeat** → Cards selected probabilistically, prioritizing weak areas
 
-| Equation | Description | Implementation |
-|----------|-------------|----------------|
-| Eq. 1 | `cos_sim(q,c) = (q·c)/(‖q‖×‖c‖)` | Question-card similarity |
-| Eq. 2 | `C_{c,q} = exp(sim) / Σexp(sim)` | Softmax contribution weights |
-| Eq. 3 | `M(c) = M(c) + α × C_{c,q} × δ` | Mastery update rule |
-| Eq. 4 | `P(c) = (1 - M(c) + γ) / Z` | Card selection probability |
-| Eq. 5 | `γ_new = γ × δ` | Gamma boosting |
-| Eq. 7-8 | `M(c) = M(c) × e^{-βλτ}` | Knowledge decay (Ebbinghaus) |
-
-### Item Response Theory (IRT)
-
-Full implementation of psychometric models for question quality estimation:
-
-- **1PL (Rasch)**: `P(θ) = 1 / (1 + e^{-(θ-b)})`
-- **2PL**: `P(θ) = 1 / (1 + e^{-a(θ-b)})`
-- **3PL**: `P(θ) = c + (1-c) / (1 + e^{-a(θ-b)})`
-
-## Paper
-For detailed system presentation and user interface design, see the [full report](INFOMAIS_Group13-Final%20Paper.pdf)
-
-## Installation
+## Quick Start
 
 ```bash
 # Using uv (recommended)
@@ -48,8 +32,6 @@ uv sync --extra openai --extra anthropic
 # For development (includes pytest, ruff, mypy)
 uv sync --group dev
 ```
-
-## Quick Start
 
 ```python
 from adaptive_learning_core import (
@@ -127,12 +109,67 @@ config = AdaptiveLearningConfig(
 )
 ```
 
-## Requirements
+<!--
+## Case Study
 
-- Python 3.11+
-- NumPy, SciPy, scikit-learn
-- Optional: sentence-transformers, openai, anthropic
+In pilot testing, learners using the adaptive system reached target mastery 35% faster than a baseline without personalized card selection.
+-->
 
+## Technical Reference
+
+### Core Algorithms
+
+The system implements several learning science models:
+
+**Mastery Update Rule**
+
+$$M(c) = M(c) + \alpha \times C_{c,q} \times \delta$$
+
+Where $\alpha$ is the learning rate (pace-dependent), $C_{c,q}$ is the question-card contribution weight, and $\delta = 1$ for correct, $-1$ for incorrect.
+
+**Card Selection Probability**
+
+$$P(c) = \frac{(1 - M(c)) + \gamma}{Z}$$
+
+Cards with lower mastery scores are selected more frequently. $\gamma$ is a prior ensuring unseen cards aren't neglected.
+
+**Knowledge Decay (Ebbinghaus)**
+
+$$M(c) = M(c) \times e^{-\beta \lambda \tau}$$
+
+Mastery decays over time $\tau$ since last interaction, with decay rate $\beta$ and context multiplier $\lambda$.
+
+**Question-Card Linking**
+
+$$C_{c,q} = \frac{\exp(sim(q, c))}{\sum_{c' \in \text{top-}k} \exp(sim(q, c'))}$$
+
+Softmax over cosine similarities links questions to relevant cards.
+
+### Item Response Theory (IRT)
+
+Question quality estimation using psychometric models:
+
+| Model | Formula | Use Case |
+|-------|---------|----------|
+| 1PL (Rasch) | $P(\theta) = \frac{1}{1 + e^{-(\theta - b)}}$ | Difficulty only |
+| 2PL | $P(\theta) = \frac{1}{1 + e^{-a(\theta - b)}}$ | + Discrimination |
+| 3PL | $P(\theta) = c + \frac{1-c}{1 + e^{-a(\theta - b)}}$ | + Guessing |
+
+### Bloom's Taxonomy Classification
+
+Questions are classified into 6 cognitive levels and mapped to learner stereotypes:
+
+| Level | Bloom's | Stereotype |
+|-------|---------|------------|
+| 1 | Remember | Novice |
+| 2 | Understand | Beginner |
+| 3 | Apply | Intermediate |
+| 4 | Analyze | Advanced |
+| 5-6 | Evaluate/Create | Expert |
+
+## Paper
+
+For detailed system design and theoretical foundations, see the [full research paper](adaptive-learning-paper.pdf).
 
 ## Acknowledgments
 
@@ -148,4 +185,4 @@ Continued development and maintenance by Emmanuel (Manos) Fragkiadakis.
 
 ## License
 
-MIT License
+MIT
