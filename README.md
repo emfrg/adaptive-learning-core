@@ -141,7 +141,7 @@ Mastery decays over time $\tau$ since last interaction, with decay rate $\beta$ 
 
 **Question-Card Linking**
 
-$$C_{c,q} = \frac{\exp(\operatorname{sim}(q, c))}{\sum_{c' \in \text{top-}k} \exp(\operatorname{sim}(q, c'))}$$
+$$C_{c,q} = \frac{\exp(sim(q, c))}{\sum_{c' \in \text{top-}k} \exp(sim(q, c'))}$$
 
 Softmax over cosine similarities links questions to relevant cards.
 
