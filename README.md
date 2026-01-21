@@ -3,7 +3,7 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Adaptive e-learning system with Bloom's Taxonomy question generation, mastery tracking, and Ebbinghaus-inspired knowledge decay. Upload any textbook, get personalized quizzes.
+Adaptive e-learning system with Bloom's Taxonomy question generation, mastery tracking, and Ebbinghaus-inspired knowledge decay. Upload a textbook, get personalized quizzes, achieve your learning goals at your pace.
 <!-- 
 ## Demo
 
@@ -141,7 +141,7 @@ Mastery decays over time $\tau$ since last interaction, with decay rate $\beta$ 
 
 **Question-Card Linking**
 
-$$C_{c,q} = \frac{\exp(\text{cos\_sim}(q, c))}{\sum_{c' \in \text{top-}k} \exp(\text{cos\_sim}(q, c'))}$$
+$$C_{c,q} = \frac{\exp(\operatorname{sim}(q, c))}{\sum_{c' \in \text{top-}k} \exp(\operatorname{sim}(q, c'))}$$
 
 Softmax over cosine similarities links questions to relevant cards.
 
