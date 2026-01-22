@@ -538,7 +538,15 @@ class SmartChunkerAgent:
             messages=[],
         )
 
-        config = {"configurable": {"thread_id": thread_id}}
+        # Calculate safe recursion limit based on number of chunks
+        # Worst case: num_chunks/batch_size classification batches + 1 filter + 1 reformat
+        num_batches = (len(chunks) + self.batch_size - 1) // self.batch_size
+        safe_limit = max(50, num_batches + 10)  # Add buffer for safety
+
+        config = {
+            "configurable": {"thread_id": thread_id},
+            "recursion_limit": safe_limit,
+        }
         result = await self.compiled.ainvoke(initial_state, config)
 
         # Convert dicts back to Chunk objects
