@@ -7,6 +7,7 @@ This agent processes raw text chunks from PDFs to create high-quality learning c
 """
 
 import json
+import uuid
 from operator import add
 from typing import Annotated, Any, Optional, TypedDict
 
@@ -185,8 +186,10 @@ def create_classify_node(llm: BaseChatModel, batch_size: int = 5):
         batch = input_chunks[start_idx:end_idx]
 
         if not batch:
+            # No more chunks - ensure we have a valid batch index to exit the loop
             return {
                 "processing_complete": True,
+                "current_batch_index": current_batch + 1,
                 "messages": [AIMessage(content="No more chunks to classify")],
             }
 
@@ -473,7 +476,7 @@ class SmartChunkerAgent:
     async def process(
         self,
         chunks: list[Chunk],
-        thread_id: str = "default",
+        thread_id: Optional[str] = None,
     ) -> list[Chunk]:
         """Process chunks, filtering and reformatting.
 
@@ -490,7 +493,7 @@ class SmartChunkerAgent:
     async def process_with_stats(
         self,
         chunks: list[Chunk],
-        thread_id: str = "default",
+        thread_id: Optional[str] = None,
     ) -> tuple[list[Chunk], dict[str, Any]]:
         """Process chunks and return statistics.
 
@@ -513,6 +516,10 @@ class SmartChunkerAgent:
                 "rejection_breakdown": {},
                 "rejection_reasons": [],
             }
+
+        # Generate unique thread_id to avoid stale state from checkpointer
+        if thread_id is None:
+            thread_id = f"smart_chunker_{uuid.uuid4().hex[:8]}"
 
         # Convert Chunk objects to dicts for state
         input_chunks = [self._chunk_to_dict(c) for c in chunks]
