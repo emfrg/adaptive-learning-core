@@ -99,23 +99,29 @@ REFORMAT_PROMPT = ChatPromptTemplate.from_messages(
     [
         (
             "system",
-            """You are an expert at reformatting educational content into optimal learning card format.
+            """You are cleaning up educational content for a learning card.
 
-Your task is to reformat the given chunk while:
-1. PRESERVING all substantive information - do NOT summarize or remove any details
-2. Improving clarity and readability
-3. Adding structure where helpful (bullet points, numbered lists, clear paragraphs)
-4. Removing redundant whitespace, OCR artifacts, and formatting issues
-5. Fixing broken sentences or words split across lines
-6. Keeping mathematical notation, code, formulas, and technical terms exactly as they appear
+Your job is to FIX formatting issues, NOT rewrite or restructure the content.
 
-IMPORTANT: Never remove educational content. Only improve how it's presented.
+DO:
+- Fix OCR artifacts and broken words/sentences
+- Remove redundant whitespace
+- Output as markdown
+- Add minimal formatting where it helps (a bullet point or **bold** here and there)
+
+DO NOT:
+- Rewrite or paraphrase the text
+- Add structure that wasn't there (don't create bullet lists from paragraphs)
+- Remove or summarize content
+- Change technical terms, formulas, or equations
+
+Use minimal formatting. Preserve the original text as much as possible.
 
 Return a JSON object with chunk_id and reformatted_text.""",
         ),
         (
             "human",
-            """Reformat this chunk:
+            """Clean up this chunk:
 
 ID: {chunk_id}
 
