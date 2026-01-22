@@ -108,14 +108,21 @@ DO:
 - Remove redundant whitespace
 - Output as markdown
 - Add minimal formatting where it helps (a bullet point or **bold** here and there)
+- Remove citation markers like (5), [5], [Smith 2020], superscript numbers, and footnote references
+- Remove end-of-text reference lists or bibliographies
 
 DO NOT:
 - Rewrite or paraphrase the text
 - Add structure that wasn't there (don't create bullet lists from paragraphs)
-- Remove or summarize content
+- Remove or summarize educational content
 - Change technical terms, formulas, or equations
 
-Use minimal formatting. Preserve the original text as much as possible.
+EXCEPTION for citations: Keep attributions that add educational value.
+- REMOVE: "The mitochondria is the powerhouse of the cell [5]."
+- KEEP: "As Plato argued in *The Republic*, justice is..."
+- KEEP: "Einstein's famous equation E=mc²..."
+
+The goal is to remove reference noise while preserving meaningful attributions.
 
 Return a JSON object with chunk_id and reformatted_text.""",
         ),
